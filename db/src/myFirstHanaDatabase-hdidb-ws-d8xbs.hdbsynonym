@@ -1,0 +1,8 @@
+{
+  "com.sap::SAIRPORT": {
+    "target": {
+      "object": "SAIRPORT",
+      "schema": "SFLIGHT"
+    }
+  }
+}

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="viewSBOOK_CARR" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" application="BAS">
+<descriptions defaultDescription="viewSBOOK_CARR"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="com.sap::SBOOK">
+    <resourceUri>com.sap::SBOOK</resourceUri>
+  </DataSource>
+  <DataSource id="com.sap::SCARR">
+    <resourceUri>com.sap::SCARR</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="BOOKID"/>
+      <viewAttribute id="CUSTOMID"/>
+      <viewAttribute id="CARRID"/>
+      <viewAttribute id="CARRNAME"/>
+      <viewAttribute id="CURRCODE"/>
+      <viewAttribute hidden="true" id="JOIN$MANDT$MANDT"/>
+      <viewAttribute hidden="true" id="JOIN$CARRID$CARRID"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_1" datatype="BIGINT" expressionLanguage="SQL">
+        <formula>1</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="com.sap::SBOOK">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CARRID" source="CARRID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BOOKID" source="BOOKID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMID" source="CUSTOMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$MANDT$MANDT" source="MANDT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CARRID$CARRID" source="CARRID"/>
+    </input>
+    <input node="com.sap::SCARR">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CARRNAME" source="CARRNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CURRCODE" source="CURRCODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$MANDT$MANDT" source="MANDT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CARRID$CARRID" source="CARRID"/>
+    </input>
+    <joinAttribute name="JOIN$MANDT$MANDT"/>
+    <joinAttribute name="JOIN$CARRID$CARRID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:RankView" id="Rank_1">
+    <viewAttributes>
+      <viewAttribute id="BOOKID"/>
+      <viewAttribute id="CUSTOMID"/>
+      <viewAttribute id="CARRID"/>
+      <viewAttribute id="CARRNAME"/>
+      <viewAttribute id="CURRCODE"/>
+      <viewAttribute id="CC_1"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Join_1"/>
+    <rankingFilter type="RANK" offsetReference="FRONT" dynamicPartitionAttributes="false">
+      <order byViewAttributeName="BOOKID" direction="ASC"/>
+      <rankThreshold>
+        <value>10</value>
+      </rankThreshold>
+    </rankingFilter>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Rank_1">
+  <attributes>
+    <attribute id="BOOKID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="BOOKID"/>
+      <keyMapping columnObjectName="Rank_1" columnName="BOOKID"/>
+    </attribute>
+    <attribute id="CUSTOMID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUSTOMID"/>
+      <keyMapping columnObjectName="Rank_1" columnName="CUSTOMID"/>
+    </attribute>
+    <attribute id="CARRID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CARRID"/>
+      <keyMapping columnObjectName="Rank_1" columnName="CARRID"/>
+    </attribute>
+    <attribute id="CARRNAME" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CARRNAME"/>
+      <keyMapping columnObjectName="Rank_1" columnName="CARRNAME"/>
+    </attribute>
+    <attribute id="CURRCODE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CURRCODE"/>
+      <keyMapping columnObjectName="Rank_1" columnName="CURRCODE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="CC_1" order="7" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="CC_1"/>
+      <measureMapping columnObjectName="Rank_1" columnName="CC_1"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures>
+    <measure id="COUNT_1" order="6" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT" length="">
+      <exceptionAggregation>
+        <attribute attributeName="BOOKID"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      
+      <exceptionAggregationMetadata>
+        <attribute attributeName="BOOKID"/>
+      </exceptionAggregationMetadata>
+    </measure>
+  </calculatedMeasures>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="90" y="296"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="com.sap::SBOOK" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="164.681640625"/>
+    </shape>
+    <shape modelObjectName="com.sap::SCARR" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="163.345703125"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Rank_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="100" y="213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
